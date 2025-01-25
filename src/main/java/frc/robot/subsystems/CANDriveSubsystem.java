@@ -29,6 +29,7 @@ public class CANDriveSubsystem extends SubsystemBase {
     rightFollower.follow(rightLeader);
 
     leftLeader.setInverted(true);
+    leftFollower.setInverted(true);
   }
 
   @Override
@@ -39,6 +40,5 @@ public class CANDriveSubsystem extends SubsystemBase {
   public void driveArcade(double xSpeed, double zRotation) {
   leftLeader.set(ControlMode.PercentOutput,xSpeed + zRotation);
   rightLeader.set(ControlMode.PercentOutput,xSpeed - zRotation);
-
   }
 }
