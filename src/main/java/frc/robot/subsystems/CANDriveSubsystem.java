@@ -21,7 +21,7 @@ public class CANDriveSubsystem extends SubsystemBase {
   private final SparkMax rightLeader;
   private final SparkMax rightFollower;
 
-  private final DifferentialDrive drive;
+  //private final DifferentialDrive drive;
 
   public CANDriveSubsystem() {
     // create brushed motors for drive
@@ -31,7 +31,7 @@ public class CANDriveSubsystem extends SubsystemBase {
     rightFollower = new SparkMax(DriveConstants.RIGHT_FOLLOWER_ID, MotorType.kBrushed);
 
     // set up differential drive class
-    drive = new DifferentialDrive(leftLeader, rightLeader);
+    //drive = new DifferentialDrive(leftLeader, rightLeader);
 
     // Set can timeout. Because this project only sets parameters once on
     // construction, the timeout can be long without blocking robot operation. Code
@@ -73,6 +73,12 @@ public class CANDriveSubsystem extends SubsystemBase {
 
   // sets the speed of the drive motors
   public void driveArcade(double xSpeed, double zRotation) {
-    drive.arcadeDrive(xSpeed, zRotation);
+    //drive.arcadeDrive(xSpeed, zRotation);
+  }
+
+  public void driveTank(double leftSpeed, double rightSpeed)
+  {
+    leftLeader.set(leftSpeed);
+    rightLeader.set(rightSpeed);
   }
 }

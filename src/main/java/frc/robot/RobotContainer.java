@@ -12,10 +12,13 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RollerConstants;
 import frc.robot.commands.AutoCommand;
+import frc.robot.commands.ClimberCommand;
+import frc.robot.commands.ClimberUp;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.RollerCommand;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.CANRollerSubsystem;
+import frc.robot.subsystems.Climber;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -29,6 +32,7 @@ import frc.robot.subsystems.CANRollerSubsystem;
 public class RobotContainer {
   // The robot's subsystems
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
+  private final Climber climber = new Climber();
   //private final CANRollerSubsystem rollerSubsystem = new CANRollerSubsystem();
 
   // The driver's controller
@@ -36,8 +40,8 @@ public class RobotContainer {
       OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   // The operator's controller
- // private final CommandXboxController operatorController = new CommandXboxController(
-   //   OperatorConstants.OPERATOR_CONTROLLER_PORT);
+  private final CommandXboxController operatorController = new CommandXboxController(
+     OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -76,6 +80,9 @@ public class RobotContainer {
     // before
    // operatorController.a()
       //  .whileTrue(new RollerCommand(() -> RollerConstants.ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
+
+      operatorController.povUp().whileTrue(new ClimberUp(climber));
+      operatorController.povDown().whileTrue(new ClimberCommand(climber));
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
