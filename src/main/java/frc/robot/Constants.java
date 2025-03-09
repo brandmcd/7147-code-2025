@@ -18,14 +18,41 @@ package frc.robot;
  */
 public final class Constants {
   public static final class DriveConstants {
-    public static final int LEFT_LEADER_ID = 1;
-    public static final int LEFT_FOLLOWER_ID = 2;
-    public static final int RIGHT_LEADER_ID = 3;
-    public static final int RIGHT_FOLLOWER_ID = 4;
+    /* Set motor ID */
+    public static final int leftDriveFront = 3;
+    public static final int leftDriveBack = 4;
+    public static final int rightDriveFront = 2;
+    public static final int rightDriveBack = 1;
 
-    public static final double SPEED_MULT = 0.30;
-    public static final int DRIVE_MOTOR_CURRENT_LIMIT = 60;
+    /* Set current limit */
+    public static final int driveCurrentLimit = 60;
+
+    /* Set drive multiplier */
+    public static final double driveMultiplier = 1;
   }
+
+  public static final class LiftConstants{
+    /* Set motor ID */
+    public static final int liftMotor = 11;
+    public static final int coralMotor = 13;
+
+    /* Set current limit */
+    public static final int liftCurrentLimit = 60;
+
+    /* Set PID constants */
+    public static final double liftMotorP = 0.1;
+    public static final double liftMotorI = 0.0;
+    public static final double liftMotorD = 0.0; 
+    public static final int liftTolerance = 50; //Ticks
+
+    
+    public static final int bottomLimitSwitch = 0;
+
+    //Lift Setpoints
+    public static final int low = 0;
+    public static final int mid = 0;
+    public static final int high = 0; //All three of these should be in ticks
+}
 
   public static final class RollerConstants {
     public static final int ROLLER_MOTOR_ID = 5;

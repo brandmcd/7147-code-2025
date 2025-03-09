@@ -10,12 +10,11 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.Constants.RollerConstants;
-import frc.robot.commands.AutoCommand;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.RollerCommand;
-import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.CANRollerSubsystem;
+import frc.robot.commands.LiftCommand;
+import frc.robot.subsystems.TankSubsystem;
+import frc.robot.subsystems.LiftSubsystem;
+// import frc.robot.subsystems.ClimbSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -27,13 +26,19 @@ import frc.robot.subsystems.CANRollerSubsystem;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-  // The robot's subsystems
-  private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
-  //private final CANRollerSubsystem rollerSubsystem = new CANRollerSubsystem();
+  /* Robot Subsystem */
+  private final TankSubsystem tankSubsystem = new TankSubsystem();
+  private final LiftSubsystem liftSubsystem = new LiftSubsystem();
+  // private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+
+  /* Robot Command */
+  private final DriveCommand driveCommand = new DriveCommand(tankSubsystem);
+  private final LiftCommand lifeCommand = new LiftCommand(liftSubsystem, false);
+  // private final ClimbCommand climbCommand = new ClimbCommand(climbSubsystem);
 
   // The driver's controller
-  private final CommandXboxController driverController = new CommandXboxController(
-      OperatorConstants.DRIVER_CONTROLLER_PORT);
+  // private final CommandXboxController driverController = new CommandXboxController(
+  //     OperatorConstants.DRIVER_CONTROLLER_PORT);
 
   // The operator's controller
  // private final CommandXboxController operatorController = new CommandXboxController(
@@ -52,7 +57,7 @@ public class RobotContainer {
     // Set the options to show up in the Dashboard for selecting auto modes. If you
     // add additional auto modes you can add additional lines here with
     // autoChooser.addOption
-    autoChooser.setDefaultOption("Autonomous", new AutoCommand(driveSubsystem));
+    // autoChooser.setDefaultOption("Autonomous", new AutoCommand(tankSubsystem));
   }
 
   /**
@@ -77,16 +82,6 @@ public class RobotContainer {
    // operatorController.a()
       //  .whileTrue(new RollerCommand(() -> RollerConstants.ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
 
-    // Set the default command for the drive subsystem to an instance of the
-    // DriveCommand with the values provided by the joystick axes on the driver
-    // controller. The Y axis of the controller is inverted so that pushing the
-    // stick away from you (a negative value) drives the robot forwards (a positive
-    // value). Similarly for the X axis where we need to flip the value so the
-    // joystick matches the WPILib convention of counter-clockwise positive
-    driveSubsystem.setDefaultCommand(new DriveCommand(
-        () -> -driverController.getLeftY()  * DriveConstants.SPEED_MULT,
-        () -> -driverController.getRightX()  * DriveConstants.SPEED_MULT,
-        driveSubsystem));
 
     // Set the default command for the roller subsystem to an instance of
     // RollerCommand with the values provided by the triggers on the operator
@@ -95,6 +90,10 @@ public class RobotContainer {
      //   () -> operatorController.getRightTriggerAxis(),
        // () -> operatorController.getLeftTriggerAxis(),
        // rollerSubsystem));
+    
+    /* Set lifter key binding */
+    new Trigger(() -> OI.getOperatorContnroller().getYButton()).whileTrue(new LiftCommand(liftSubsystem, true));
+    new Trigger(() -> OI.getOperatorContnroller().getAButton()).whileTrue(new LiftCommand(liftSubsystem, false));
   }
 
   /**

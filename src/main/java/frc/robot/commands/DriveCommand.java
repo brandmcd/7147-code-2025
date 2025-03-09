@@ -6,43 +6,37 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.DriveConstants;
-import frc.robot.subsystems.CANDriveSubsystem;
-import java.util.function.DoubleSupplier;
+import frc.robot.subsystems.TankSubsystem;
+import frc.robot.OI;
 
 // Command to drive the robot with joystick inputs
 public class DriveCommand extends Command {
-  private final DoubleSupplier xSpeed;
-  private final DoubleSupplier zRotation;
-  private final CANDriveSubsystem driveSubsystem;
+  private final TankSubsystem tankSubsystem;
 
   // Constructor. Runs only once when the command is first created.
-  public DriveCommand(
-      DoubleSupplier xSpeed, DoubleSupplier zRotation, CANDriveSubsystem driveSubsystem) {
-    // Save parameters to local variables for use later
-    this.xSpeed = xSpeed;
-    this.zRotation = zRotation;
-    this.driveSubsystem = driveSubsystem;
-
-    // Declare subsystems required by this command. This should include any
-    // subsystem this command sets and output of
-    addRequirements(this.driveSubsystem);
-  }
-
-  // Runs each time the command is scheduled.
-  @Override
-  public void initialize() {
+  public DriveCommand(TankSubsystem tankSubsystem) {
+    this.tankSubsystem = tankSubsystem;
   }
 
   // Runs every cycle while the command is scheduled (~50 times per second)
   @Override
   public void execute() {
-    driveSubsystem.driveArcade(xSpeed.getAsDouble(),
-        zRotation.getAsDouble());
+    /* Get position from joystick */
+    double leftDrive = OI.getDriveConroller().getLeftY();
+    double rightDrive = OI.getDriveConroller().getRightY();
+
+    /* Avoid drifting at low input */
+    leftDrive = Math.abs(leftDrive) < 0.05 ? 0 : leftDrive;
+    leftDrive*= DriveConstants.driveMultiplier;
+    rightDrive = Math.abs(rightDrive) < 0.05 ? 0 : rightDrive;
+    rightDrive *= DriveConstants.driveMultiplier;
+    tankSubsystem.driveTank(leftDrive, rightDrive);
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
   @Override
   public void end(boolean isInterrupted) {
+    tankSubsystem.driveTank(0, 0);
   }
 
   // Runs every cycle while the command is scheduled to check if the command is
