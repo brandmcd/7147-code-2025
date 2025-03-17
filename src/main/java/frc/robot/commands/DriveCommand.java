@@ -38,7 +38,7 @@ public class DriveCommand extends Command {
   public void execute() {
    // driveSubsystem.driveArcade(xSpeed.getAsDouble(),
      //   zRotation.getAsDouble());
-     driveSubsystem.driveTank(leftSpeed.getAsDouble(), rightSpeed.getAsDouble());
+     driveSubsystem.driveArcade(leftSpeed.getAsDouble(), rightSpeed.getAsDouble());
   }
 
   // Runs each time the command ends via isFinished or being interrupted.
