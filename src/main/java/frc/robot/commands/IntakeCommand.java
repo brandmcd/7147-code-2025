@@ -5,54 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.IntakeSubsystem;
 
-import java.util.function.DoubleSupplier;
-
-// Command to run the roller with joystick inputs
+/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class IntakeCommand extends Command {
-  private final DoubleSupplier forward;
-  private final DoubleSupplier reverse;
-  private final DoubleSupplier armSupplier;
-  private final IntakeSubsystem intakeSubsystem;
-
-  public IntakeCommand(
-      DoubleSupplier forward, DoubleSupplier reverse, DoubleSupplier armSupplier, IntakeSubsystem intakeSubsystem) {
-    this.forward = forward;
-    this.reverse = reverse;
-    this.armSupplier = armSupplier;
-    this.intakeSubsystem = intakeSubsystem;
-
-    addRequirements(this.intakeSubsystem);
+  /** Creates a new IntakeCommand. */
+  public IntakeCommand() {
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
+  // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-  }
+  public void initialize() {}
 
-  // Runs every cycle while the command is scheduled (~50 times per second)
+  // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    // Run the roller motor at the desired speed
-   intakeSubsystem.runRoller(forward.getAsDouble(), reverse.getAsDouble());
-   //run the arm
-   if(Math.abs(armSupplier.getAsDouble()) > 0.05)
-   {
-    intakeSubsystem.setintakeRotatePower(armSupplier.getAsDouble());
-   }
-  }
+  public void execute() {}
 
-  // Runs each time the command ends via isFinished or being interrupted.
+  // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean isInterrupted) {
-  }
+  public void end(boolean interrupted) {}
 
-  // Runs every cycle while the command is scheduled to check if the command is
-  // finished
+  // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    // Return false to indicate that this command never ends. It can be interrupted
-    // by another command needing the same subsystem.
     return false;
   }
 }
