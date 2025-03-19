@@ -11,14 +11,16 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RollerConstants;
+import frc.robot.commands.ArmCommand;
 import frc.robot.commands.AutoCommand;
 import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.DriveCommand;
-import frc.robot.commands.RollerCommand;
+import frc.robot.commands.IntakeCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CANDriveSubsystem;
-import frc.robot.subsystems.CANRollerSubsystem;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.IntakeSubsystem;
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -32,8 +34,10 @@ import frc.robot.subsystems.Climber;
 public class RobotContainer {
   // The robot's subsystems
   private final CANDriveSubsystem driveSubsystem = new CANDriveSubsystem();
+  private final ArmSubsystem armSubsystem = new ArmSubsystem();
   private final Climber climber = new Climber();
-  //private final CANRollerSubsystem rollerSubsystem = new CANRollerSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  // private final CANRollerSubsystem rollerSubsystem = new CANRollerSubsystem();
 
   // The driver's controller
   private final CommandXboxController driverController = new CommandXboxController(
@@ -41,7 +45,7 @@ public class RobotContainer {
 
   // The operator's controller
   private final CommandXboxController operatorController = new CommandXboxController(
-     OperatorConstants.OPERATOR_CONTROLLER_PORT);
+      OperatorConstants.OPERATOR_CONTROLLER_PORT);
 
   // The autonomous chooser
   private final SendableChooser<Command> autoChooser = new SendableChooser<>();
@@ -78,11 +82,12 @@ public class RobotContainer {
     // value ejecting the gamepiece while the button is held
 
     // before
-   // operatorController.a()
-      //  .whileTrue(new RollerCommand(() -> RollerConstants.ROLLER_EJECT_VALUE, () -> 0, rollerSubsystem));
+    // operatorController.a()
+    // .whileTrue(new RollerCommand(() -> RollerConstants.ROLLER_EJECT_VALUE, () ->
+    // 0, rollerSubsystem));
 
-      operatorController.povUp().whileTrue(new ClimberUp(climber));
-      operatorController.povDown().whileTrue(new ClimberCommand(climber));
+    operatorController.povUp().whileTrue(new ClimberUp(climber));
+    operatorController.povDown().whileTrue(new ClimberCommand(climber));
 
     // Set the default command for the drive subsystem to an instance of the
     // DriveCommand with the values provided by the joystick axes on the driver
@@ -91,17 +96,23 @@ public class RobotContainer {
     // value). Similarly for the X axis where we need to flip the value so the
     // joystick matches the WPILib convention of counter-clockwise positive
     driveSubsystem.setDefaultCommand(new DriveCommand(
-        () -> -driverController.getLeftY()  * DriveConstants.SPEED_MULT,
-        () -> -driverController.getRightX()  * DriveConstants.SPEED_MULT,
+        () -> -driverController.getLeftY() * DriveConstants.SPEED_MULT,
+        () -> -driverController.getRightX() * DriveConstants.SPEED_MULT,
         driveSubsystem));
+
+    // TODO: change left Y and 0.5 if you want
+    armSubsystem.setDefaultCommand(new ArmCommand(
+        () -> -operatorController.getLeftY() * 0.5,
+        armSubsystem));
 
     // Set the default command for the roller subsystem to an instance of
     // RollerCommand with the values provided by the triggers on the operator
     // controller
-   // rollerSubsystem.setDefaultCommand(new RollerCommand(
-     //   () -> operatorController.getRightTriggerAxis(),
-       // () -> operatorController.getLeftTriggerAxis(),
-       // rollerSubsystem));
+    intakeSubsystem.setDefaultCommand(new IntakeCommand(
+        () -> operatorController.getRightTriggerAxis(),
+        () -> operatorController.getLeftTriggerAxis(),
+        () -> operatorController.getRightY(),
+        intakeSubsystem));
   }
 
   /**

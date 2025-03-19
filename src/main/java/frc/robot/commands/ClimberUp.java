@@ -26,14 +26,14 @@ public class ClimberUp extends Command {
   @Override
   public void execute() 
   {
-    climberSubsystem.runClimber(-0.5);
+    climberSubsystem.runClimber(0.5);
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     climberSubsystem.runClimber(0);
-   }
+  }
 
   // Returns true when the command should end.
   @Override
