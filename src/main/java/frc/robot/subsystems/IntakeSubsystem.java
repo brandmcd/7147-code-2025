@@ -74,9 +74,4 @@ public class IntakeSubsystem extends SubsystemBase {
   public void stopintakeRotate() {
     setintakeRotatePower(0);
   }
-
-   /** This is a method that makes the roller spin */
-   public void runRoller(double forward, double reverse) {
-    m_intakeRotate.set(forward - reverse);
-  }
 }

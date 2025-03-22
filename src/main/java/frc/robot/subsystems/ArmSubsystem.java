@@ -12,7 +12,6 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.CoralConstants;
-import frc.robot.Constants.RollerConstants;
 
 public class ArmSubsystem extends SubsystemBase {
     private final SparkMax armMotor;

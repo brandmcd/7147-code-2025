@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.CoralConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.RollerConstants;
@@ -17,6 +18,7 @@ import frc.robot.commands.ClimberCommand;
 import frc.robot.commands.ClimberUp;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.IntakeCommand;
+import frc.robot.commands.IntakeWheelCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.CANDriveSubsystem;
 import frc.robot.subsystems.Climber;
@@ -100,19 +102,15 @@ public class RobotContainer {
         () -> -driverController.getRightX() * DriveConstants.SPEED_MULT,
         driveSubsystem));
 
-    // TODO: change left Y and 0.5 if you want
     armSubsystem.setDefaultCommand(new ArmCommand(
-        () -> -operatorController.getLeftY() * 0.5,
+        () -> -operatorController.getLeftY() * CoralConstants.ARM_SPEED_MULT,
         armSubsystem));
 
-    // Set the default command for the roller subsystem to an instance of
-    // RollerCommand with the values provided by the triggers on the operator
-    // controller
-    intakeSubsystem.setDefaultCommand(new IntakeCommand(
-        () -> operatorController.getRightTriggerAxis(),
-        () -> operatorController.getLeftTriggerAxis(),
-        () -> operatorController.getRightY(),
-        intakeSubsystem));
+    // run wheel when right trigger is pressed
+    operatorController.rightTrigger().whileTrue(new IntakeWheelCommand(intakeSubsystem));
+
+    intakeSubsystem.setDefaultCommand(new IntakeCommand(intakeSubsystem,
+        () -> -operatorController.getRightY() * CoralConstants.INTAKE_ROTATE_SPEEDMULT));
   }
 
   /**

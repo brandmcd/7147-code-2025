@@ -41,11 +41,16 @@ public final class Constants {
 
   public static final class CoralConstants {
     //motor attached to spool
-    public static final int ARM_MOTOR_ID = ?;
+    public static final int ARM_MOTOR_ID = 5;
     //motor attached to wheel
-    public static final int INTAKE_WHEEL_ID = ?;
+    public static final int INTAKE_WHEEL_ID = 11;
     //motor attached to rotation
-    public static final int INTAKE_ROTATE_ID = ?;
-
+    public static final int INTAKE_ROTATE_ID = 10;
+    //speed 0->1
+    public static final double INTAKE_WHEEL_SPEED = 0.5;
+    //multiplier 0->1
+    public static final double ARM_SPEED_MULT = 0.5;
+    //multiplier 0->1
+    public static final double INTAKE_ROTATE_SPEEDMULT = 0.2;
   }
 }
